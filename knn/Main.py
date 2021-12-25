@@ -6,6 +6,7 @@ import numpy as np
 from PIL import ImageGrab
 from matplotlib import pyplot as plt
 from mnist import MNIST
+import os
 
 #khởi tạo GUI
 root = Tk() 
@@ -20,7 +21,8 @@ height = 480
 #khởi tạo dữ liệu training
 
 #This dataset is already split into training data in the form of a 2D list of integers.
-mnist = MNIST('../dataset/MNIST')
+#mnist = MNIST('../dataset/MNIST')
+mnist = MNIST()
 images_train, labels_train = mnist.load_training()
 
 # chuyển đổi dữ liệu training thành kiểu numpy.ndarray của np.float32

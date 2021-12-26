@@ -7,7 +7,7 @@ import numpy as np
 
 #khởi tạo dữ liệu training và dữ liệu test
 #This dataset is already split into training data and test data in the form of a 2D list of integers.
-mnist = MNIST('../dataset/MNIST')
+mnist = MNIST()
 images_train, labels_train = mnist.load_training()
 images_test, labels_test = mnist.load_testing()
 
@@ -23,7 +23,13 @@ knn = cv2.ml.KNearest_create()
 knn.train(x_train, cv2.ml.ROW_SAMPLE, y_train)
 
 # Đánh giá với k = 3 (kết quả > 97% (khoảng 97,05%))
-return_value, results, neighbors, distances = knn.findNearest(x_test, 3)
-correct = np.count_nonzero(results.flatten() == labels_test)
-accuracy = correct * 100.0 / len(labels_test)
-print (accuracy)
+# return_value, results, neighbors, distances = knn.findNearest(x_test, 3)
+# correct = np.count_nonzero(results.flatten() == labels_test)
+# accuracy = correct * 100.0 / len(labels_test)
+# print (accuracy)
+
+for k in range(1, 10):
+	return_value, results, neighbors, distances = knn.findNearest(x_test, k)
+	correct = np.count_nonzero(results.flatten() == labels_test)
+	accuracy = correct * 100.0 / len(labels_test)
+	print ("k =", k, "accuracy =", accuracy, "%")

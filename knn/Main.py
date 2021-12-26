@@ -204,9 +204,9 @@ def upload_black_background_image(): #Hàm upload với ảnh có nền đen
             print(result)
             print(neighbors)
 
-        cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
-        f.write(result)
-        count += 1
+            cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
+            f.write(result)
+            count += 1
 
     f.close()
     put_text_result(image, count)

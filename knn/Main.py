@@ -33,7 +33,7 @@ y_train = np.asarray(labels_train).astype(np.int32)
 knn = cv2.ml.KNearest_create()
 #train model với tập dữ liệu và nhãn phía trên
 knn.train(x_train, cv2.ml.ROW_SAMPLE, y_train)
-k = 10 #khởi tạo số lượng hàng xóm
+k = 3 #khởi tạo số lượng hàng xóm
 
 #Tạo bảng để vẽ
 cv = Canvas(root, width=width, height=height, bg='white')
@@ -102,24 +102,24 @@ def Recognize_Digit(): #Nhận diện số trên bảng
     for cnt in contours:
 
         x, y, w, h = cv2.boundingRect(cnt)
-        
-        cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 1)
-        digit = th[y:y + h, x:x + w]
-        resized_digit = cv2.resize(digit, (18, 18))
-        padded_digit = np.pad(resized_digit, ((5, 5), (5, 5)), "constant", constant_values=0)
+        if(w > 2 and h > 6):
+            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 1)
+            digit = th[y:y + h, x:x + w]
+            resized_digit = cv2.resize(digit, (18, 18))
+            padded_digit = np.pad(resized_digit, ((5, 5), (5, 5)), "constant", constant_values=0)
 
-        img = np.array(padded_digit)
-        rec_img = img.reshape(-1,28*28).astype(np.float32)
+            img = np.array(padded_digit)
+            rec_img = img.reshape(-1,28*28).astype(np.float32)
 
-        #Bắt đầu thực hiện tìm hàng xóm gần nhất(với k hàng xóm)
-        return_value, results, neighbors, distances = knn.findNearest(rec_img, k)
-        result = str(results.astype(int)[0][0])
-        print(result)
-        print(neighbors)
+            #Bắt đầu thực hiện tìm hàng xóm gần nhất(với k hàng xóm)
+            return_value, results, neighbors, distances = knn.findNearest(rec_img, k)
+            result = str(results.astype(int)[0][0])
+            print(result)
+            print(neighbors)
 
-        cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
-        f.write(result)
-        count += 1
+            cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
+            f.write(result)
+            count += 1
 
     f.close()    
     put_text_result(image, count)
@@ -148,25 +148,25 @@ def upload_image(): #Hàm upload với ảnh có nền trắng hoặc xám
     for cnt in contours:
 
         x, y, w, h = cv2.boundingRect(cnt)
-        
-        cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 1)
-        digit = th[y:y + h, x:x + w]
-        resized_digit = cv2.resize(digit, (18, 18))
-        padded_digit = np.pad(resized_digit, ((5, 5), (5, 5)), "constant", constant_values=0)
-        x2 = np.array(padded_digit)
+        if(w > 2 and h > 6):
+            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 1)
+            digit = th[y:y + h, x:x + w]
+            resized_digit = cv2.resize(digit, (18, 18))
+            padded_digit = np.pad(resized_digit, ((5, 5), (5, 5)), "constant", constant_values=0)
+            x2 = np.array(padded_digit)
 
-        img = np.array(padded_digit)
-        rec_img = img.reshape(-1,28*28).astype(np.float32)
+            img = np.array(padded_digit)
+            rec_img = img.reshape(-1,28*28).astype(np.float32)
 
-        #Bắt đầu thực hiện tìm hàng xóm gần nhất(với k hàng xóm)
-        return_value, results, neighbors, distances = knn.findNearest(rec_img, k)
-        result = str(results.astype(int)[0][0])
-        print(result)
-        print(neighbors)
+            #Bắt đầu thực hiện tìm hàng xóm gần nhất(với k hàng xóm)
+            return_value, results, neighbors, distances = knn.findNearest(rec_img, k)
+            result = str(results.astype(int)[0][0])
+            print(result)
+            print(neighbors)
 
-        cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
-        f.write(result)
-        count += 1
+            cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
+            f.write(result)
+            count += 1
 
     f.close()
     put_text_result(image, count)
@@ -188,21 +188,21 @@ def upload_black_background_image(): #Hàm upload với ảnh có nền đen
     for cnt in contours:
 
         x, y, w, h = cv2.boundingRect(cnt)
-        
-        cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 1)
-        digit = th[y:y + h, x:x + w]
-        resized_digit = cv2.resize(digit, (18, 18))
-        padded_digit = np.pad(resized_digit, ((5, 5), (5, 5)), "constant", constant_values=0)
-        x2 = np.array(padded_digit)
+        if(w > 2 and h > 6):
+            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 1)
+            digit = th[y:y + h, x:x + w]
+            resized_digit = cv2.resize(digit, (18, 18))
+            padded_digit = np.pad(resized_digit, ((5, 5), (5, 5)), "constant", constant_values=0)
+            x2 = np.array(padded_digit)
 
-        img = np.array(padded_digit)
-        rec_img = img.reshape(-1,28*28).astype(np.float32)
+            img = np.array(padded_digit)
+            rec_img = img.reshape(-1,28*28).astype(np.float32)
 
-        #Bắt đầu thực hiện tìm hàng xóm gần nhất(với k hàng xóm)
-        return_value, results, neighbors, distances = knn.findNearest(rec_img, k)
-        result = str(results.astype(int)[0][0])
-        print(result)
-        print(neighbors)
+            #Bắt đầu thực hiện tìm hàng xóm gần nhất(với k hàng xóm)
+            return_value, results, neighbors, distances = knn.findNearest(rec_img, k)
+            result = str(results.astype(int)[0][0])
+            print(result)
+            print(neighbors)
 
         cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
         f.write(result)

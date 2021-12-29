@@ -78,6 +78,7 @@ def put_text_result(count):
 # Số 2 là để hàm thực hiện nhận diện số trong ảnh nền trắng
 # Số 3 là để hàm thực hiện nhận diện số trong ảnh nền đen
 def Recognize_Digit(type_img):
+    a = []
     # 82 - 90: lưu ảnh cần nhận diện vào biến image 
     if(type_img != 1):
         #Lấy đường dẫn của ảnh cần đọc
@@ -100,7 +101,6 @@ def Recognize_Digit(type_img):
     # đứng cạnh nhau và cho nó vào một khung hình chữ nhật
 
     f = open('text.txt', 'w+')
-    count = 0
 
     for cnt in contours:
         x, y, w, h = cv2.boundingRect(cnt)
@@ -119,11 +119,16 @@ def Recognize_Digit(type_img):
             print(result)       # in ra kết quả của số được nhận dạng
             print(neighbors)    # in ra các hàng xóm gần nhất với số lượng đã được định nghĩa ở trên
             print(distances)    # in ra khoảng cách tương ứng từ mục tiêu tới các hàng xóm
+# 123 - 135: lưu kết quả và hiển thị kết quả ra màn hình + console
+            b = {'distance': x*x + y*y, 'value': result}
+            a.append(b)
+            cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness)
 
-    # 123 - 128: lưu kết quả và hiển thị kết quả ra màn hình + console
-            cv2.putText(image, result, (x, y - 5), font, fontScale, color, thickness) 
-            f.write(result)
-            count += 1
+    a.sort(key= lambda x: x.get('distance'))
+    count = 0
+    for i in a:
+        f.write(i.get('value'))
+        count += 1        
     cv2.imshow('OCR', image)
     f.close()                   
     put_text_result(count)
